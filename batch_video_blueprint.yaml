@@ -1,0 +1,126 @@
+title: Video Generation Batch
+version: 1.0.0
+description: Generating Videos from text and sound files
+long_description: This blueprint uses deep learning networks to create a video purely from description.
+
+author: "cnvrg"
+author_email: "libhub@cnvrg.io"
+
+tags:
+  - training
+
+tasks:
+  - title: S3 Connector
+    top: 300
+    left: 0
+
+    type: exec
+
+    library: s3-connector
+    library_version: 1.0.0
+
+    command: python s3_connector.py
+
+    requirements:
+      cpu: 3.5
+      memory: 8
+      gpu: 0
+      hpu: 0
+
+    image: cnvrg/cnvrg:v5.0
+    language: python3
+
+    params:
+      - key: endpoint
+        type: 'categorical'
+        values:
+          - 'http://s3.amazonaws.com download'
+      - key: bucketname
+        type: 'categorical'
+        values:
+          - 'libhub-readme'
+      - key: localdir
+        type: 'categorical'
+        values:
+          - '/cnvrg'
+      - key: prefix
+        type: 'categorical'
+        values:
+          - 'stable_diffusion/'
+
+  - title: Batch Predict
+    top: 400
+    left: 100
+
+    type: exec
+
+    library: stable-diffusion-video
+    library_version: 1.0.0
+
+    command: python3 video.py
+
+    requirements:
+      cpu: 3.5
+      memory: 8
+      gpu: 0
+      hpu: 0
+
+    image: cnvrg/cnvrg:v5.0
+    language: python3
+
+    params:
+      - key: project_name
+        type: 'categorical'
+        values:
+          - 'A_Night_in_Paris'
+      - key: maximum_number_of_frames
+        type: 'discrete'
+        values:
+          - '150'
+      - key: no_of_prompts_start_frames
+        type: 'categorical'
+        values:
+          - '3"!"0,50,100'
+      - key: angle
+        type: 'categorical'
+        values:
+          - '0'
+      - key: zoom
+        type: 'categorical'
+        values:
+          - '1.04'
+      - key: translation_x
+        type: 'categorical'
+        values:
+          - '10*sin2*3.14*t/100'
+      - key: translation_y
+        type: 'categorical'
+        values:
+          - '0'
+      - key: seed_behavior
+        type: 'categorical'
+        values:
+           - "iter"
+      - key: seed
+        type: 'discrete'
+        values:
+           - "-1"
+      - key: fps
+        type: 'discrete'
+        values:
+           - '10'
+      - key: diffusion_style
+        type: 'categorical'
+        values:
+           - "Superhero-Diffusion"
+      - key: prompt_texts
+        type: 'categorical'
+        values:
+           - 'Captain_America_stylish_muscular_shield_in_spaceship_fighting_running_avengers_art_realistic_blond_hair_chris_evans"!"Tony_stark_ironman_handsome_nano_suit_flying_in_space_powerful_laser_surrealistic"!"Batman_Dark_Knight_caped_crusader_DC_comics_superhero_bat_mobile_gotham_city_neo_noir_painting_style'
+      - key: music_file_path
+        type: 'categorical'
+        values:
+           - "/input/s3_connector/stable_diffusion/Avengers.mp3"
+relations:
+  - from: S3 Connector
+    to: Batch Predict

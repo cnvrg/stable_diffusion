@@ -1,0 +1,66 @@
+title: Stable Diffusion Batch
+version: 1.0.0
+description: Batch Generation of stable diffusion images from prompts
+icon: python
+
+author: "cnvrg"
+author_email: "libhub@cnvrg.io"
+
+tags:
+  - training
+command: python3 batch_predict.py
+
+requirements:
+  cpu: 3.5
+  memory: 8
+  gpu: 0
+  hpu: 0
+
+image: cnvrg/cnvrg:v5.0
+language: python3
+
+arguments:
+  - key: img_height
+    type: 'categorical'
+    values:
+      - '512'
+  - key: img_width
+    type: 'categorical'
+    values:
+      - '512'
+  - key: jit_compile
+    type: 'categorical'
+    values:
+      - "False"
+  - key: num_steps
+    type: 'discrete'
+    values:
+      - '10'
+  - key: unconditional_guidance_scale
+    type: 'categorical'
+    values:
+       - "7.5"
+  - key: temperature
+    type: 'categorical'
+    values:
+       - "1"
+  - key: batch_size
+    type: 'discrete'
+    values:
+       - "50"
+  - key: image_or_text
+    type: 'categorical'
+    values:
+       - "img"
+  - key: prompt
+    type: 'categorical'
+    values:
+       - "A_unicorn_running_on_a_star"
+  - key: path_to_image
+    type: 'categorical'
+    values:
+       - ""
+  - key: second_prompt
+    type: 'categorical'
+    values:
+       - "A_soldier_crying_on_a_battlefield"

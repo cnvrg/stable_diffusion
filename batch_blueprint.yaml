@@ -1,0 +1,118 @@
+title: Image Generation Batch
+version: 1.0.0
+description: Generating Images from text
+long_description: This blueprint uses deep learning networks to create an image purely from description.
+
+author: "cnvrg"
+author_email: "libhub@cnvrg.io"
+
+tags:
+  - training
+
+tasks:
+  - title: S3 Connector
+    top: 300
+    left: 0
+
+    type: exec
+
+    library: s3-connector
+    library_version: 1.0.0
+
+    command: python s3_connector.py
+
+    requirements:
+      cpu: 3.5
+      memory: 8
+      gpu: 0
+      hpu: 0
+
+    image: cnvrg/cnvrg:v5.0
+    language: python3
+
+    params:
+      - key: endpoint
+        type: 'categorical'
+        values:
+          - 'http://s3.amazonaws.com download'
+      - key: bucketname
+        type: 'categorical'
+        values:
+          - 'libhub-readme'
+      - key: localdir
+        type: 'categorical'
+        values:
+          - '/cnvrg'
+      - key: prefix
+        type: 'categorical'
+        values:
+          - 'stable_diffusion/'
+
+  - title: Batch Predict
+    top: 400
+    left: 100
+
+    type: exec
+
+    library: stable-diffusion-batch
+    library_version: 1.0.0
+
+    command: python3 batch_predict.py
+
+    requirements:
+      cpu: 3.5
+      memory: 8
+      gpu: 0
+      hpu: 0
+
+    image: cnvrg/cnvrg:v5.0
+    language: python3
+
+    params:
+      - key: img_height
+        type: 'categorical'
+        values:
+          - '512'
+      - key: img_width
+        type: 'categorical'
+        values:
+          - '512'
+      - key: jit_compile
+        type: 'categorical'
+        values:
+          - 'False'
+      - key: num_steps
+        type: 'discrete'
+        values:
+          - '10'
+      - key: unconditional_guidance_scale
+        type: 'categorical'
+        values:
+           - "7.5"
+      - key: temperature
+        type: 'categorical'
+        values:
+           - "1"
+      - key: batch_size
+        type: 'discrete'
+        values:
+           - "50"
+      - key: image_or_text
+        type: 'categorical'
+        values:
+           - "text"
+      - key: prompt
+        type: 'categorical'
+        values:
+           - "A_unicorn_running_on_a_star"
+      - key: path_to_image
+        type: 'categorical'
+        values:
+           - '/input/s3_connector/stable_diffusion/2.jpg'
+      - key: second_prompt
+        type: 'categorical'
+        values:
+           - "A_soldier_crying_on_a_battlefield"
+relations:
+  - from: S3 Connector
+    to: Batch Predict

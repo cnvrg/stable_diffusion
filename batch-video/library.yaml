@@ -1,0 +1,74 @@
+title: Stable Diffusion Video
+version: 1.0.0
+description: Batch Generation of stable diffusion videos from prompts
+icon: python
+
+author: "cnvrg"
+author_email: "libhub@cnvrg.io"
+
+tags:
+  - training
+command: python3 video.py
+
+requirements:
+  cpu: 3.5
+  memory: 8
+  gpu: 0
+  hpu: 0
+
+image: cnvrg/cnvrg:v5.0
+language: python3
+
+arguments:
+  - key: project_name
+    type: 'categorical'
+    values:
+      - 'A_Night_in_Paris'
+  - key: max_frame_cnt
+    type: 'discrete'
+    values:
+      - '96'
+  - key: no_of_prompts_start_frames
+    type: 'categorical'
+    values:
+      - '2!0,48'
+  - key: angle
+    type: 'categorical'
+    values:
+      - '0'
+  - key: zoom
+    type: 'categorical'
+    values:
+      - '1.04'
+  - key: translation_x
+    type: 'categorical'
+    values:
+      - '10*sin2*3.14*t/100'
+  - key: translation_y
+    type: 'categorical'
+    values:
+      - '0'
+  - key: seed_behavior
+    type: 'categorical'
+    values:
+       - "iter"
+  - key: seed
+    type: 'discrete'
+    values:
+       - "-1"
+  - key: fps
+    type: 'discrete'
+    values:
+       - '12'
+  - key: diffusion_style
+    type: 'categorical'
+    values:
+       - "Illustration-Diffusion"
+  - key: prompt_texts
+    type: 'categorical'
+    values:
+       - "A_beautiful_street_view_of_paris_with_eiffel_tower,_artstation_concept_art,_extremely_detailed_oil_painting,_vivid_color!A_guy_with_a_hat_medieval_style"
+  - key: music_file_path
+    type: 'categorical'
+    values:
+       - "/input/s3_connector/stable_diffusion/"
