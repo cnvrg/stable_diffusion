@@ -1,0 +1,45 @@
+---
+title: SD Inference 
+description: "Stable Diffusion endpoint that can be used to generate image from text"
+icon: python
+
+author: "cnvrg"
+author_email: "libhub@cnvrg.io"
+
+tags:
+  - inference
+
+kind: webservice
+
+command: python3 predict.py
+
+requirements:
+  cpu: 4
+  memory: 16
+  gpu: 0
+  hpu: 0
+
+image: python:3.8.10
+
+language: python3
+
+arguments:
+  accept_files: false
+  gunicorn_config:
+    - key: workers
+      value: '1'
+    - key: timeout
+      value: '500'
+  file_name: predict.py
+  function_name: predict
+  prep_file: ''
+  prep_function: ''
+  input_example:
+    prompt: 'enter prompt here'
+    steps: '1'
+    samples: '1'
+  input_schema:
+    prompt: text
+    steps: text
+    samples: text
+  output_schema: {}
