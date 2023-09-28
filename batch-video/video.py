@@ -175,7 +175,7 @@ def main():
     generator = StableDiffusion( 
     img_height=512,
     img_width=512,
-    jit_compile=True,  # You can try False as well (different performance profile)
+    jit_compile=False,  # You can try False as well (different performance profile)
     )
     prompts_frame_dict = prompts_initialization(number_of_prompts, prompt_frame_indexes, maximum_number_of_frames, create_prompts_frames_dict, prompt_texts)
     frames_creation(project_name, prompts_frame_dict, args, generator)
